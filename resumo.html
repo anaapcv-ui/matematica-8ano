@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resumo — Fábrica de Sequências</title>
+<style>
+  :root{--azulesc:#0A2E4D;--azul:#1B6CA8;--azulcl:#4FA3D9;--laranja:#F26419;--laranjacl:#FF9E4A;--amarelo:#FFE08A;--verde:#2E9E5B;--grafite:#20303A;}
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Segoe UI',system-ui,Arial,sans-serif;background:#dfe8ee;color:var(--grafite);line-height:1.6;}
+  .fabrica-bg{background:repeating-linear-gradient(90deg,#0a2e4d 0 40px,#0c3557 40px 80px);height:14px;}
+  header{background:var(--azulesc);color:#fff;padding:26px 20px 20px;text-align:center;}
+  header h1{margin:0;font-size:1.7rem;}
+  header .sub{color:var(--laranjacl);font-weight:600;margin-top:6px;}
+  header .esteira{font-size:1.3rem;letter-spacing:8px;color:var(--laranja);margin-top:8px;}
+  .wrap{max-width:880px;margin:0 auto;padding:18px;}
+  h2.sec{color:var(--azulesc);border-left:8px solid var(--laranja);padding-left:12px;margin-top:34px;font-size:1.4rem;}
+  .card{background:#fff;border-radius:14px;padding:20px;margin:14px 0;box-shadow:0 5px 15px rgba(10,46,77,.1);border-top:5px solid var(--azul);}
+  .card h3{margin-top:0;color:var(--azul);}
+  .form{background:#eaf4fb;border:2px dashed var(--azul);border-radius:10px;padding:12px;text-align:center;font-size:1.15rem;font-weight:700;color:var(--azulesc);margin:12px 0;}
+  .esteira-ex{background:var(--azulesc);color:#fff;border-radius:10px;padding:12px;text-align:center;font-family:'Courier New',monospace;margin:12px 0;}
+  .cx{display:inline-block;background:var(--laranja);color:#fff;padding:5px 9px;border-radius:6px;margin:2px;font-weight:700;}
+  .op{color:var(--laranjacl);font-weight:700;padding:0 3px;}
+  /* flip cards */
+  .flips{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:14px 0;}
+  .flip{background:transparent;height:170px;perspective:900px;cursor:pointer;}
+  .flip-in{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d;}
+  .flip.vira .flip-in{transform:rotateY(180deg);}
+  .face{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:14px;padding:16px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.15);}
+  .frente{background:linear-gradient(135deg,var(--azul),var(--azulcl));color:#fff;}
+  .frente .tag{font-size:.75rem;opacity:.85;margin-bottom:8px;letter-spacing:1px;}
+  .frente .q{font-size:1.08rem;font-weight:700;}
+  .frente .toca{font-size:.72rem;margin-top:10px;opacity:.8;}
+  .verso{background:#fff;color:var(--grafite);transform:rotateY(180deg);border:2px solid var(--laranja);font-size:.92rem;}
+  /* post-it */
+  .postit{background:var(--amarelo);border-radius:4px;padding:14px 18px;margin:14px 0;box-shadow:2px 4px 8px rgba(0,0,0,.15);transform:rotate(-1deg);position:relative;font-size:.97rem;}
+  .postit::before{content:'📌';position:absolute;top:-10px;left:12px;font-size:1.3rem;}
+  .postit b{color:#a4470f;}
+  .pegadinha{background:#ffe3e3;border-left:6px solid #d05252;border-radius:8px;padding:12px 16px;margin:14px 0;font-size:.95rem;}
+  .pegadinha b{color:#b23b3b;}
+  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.9rem;}
+  th{background:var(--azul);color:#fff;padding:8px;}
+  td{border:1px solid #cdd;padding:7px;text-align:center;}
+  tr:nth-child(even) td{background:#f3f8fb;}
+  .glossario dt{font-weight:700;color:var(--laranja);margin-top:10px;}
+  .painel{background:var(--azulesc);color:#fff;border-radius:12px;padding:12px 16px;margin:24px 0;font-size:.82rem;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;}
+  .painel button{font-family:inherit;font-weight:700;border:none;border-radius:8px;padding:7px 12px;font-size:.8rem;cursor:pointer;}
+  .b-exp{background:var(--azul);color:#fff;}.b-imp{background:var(--laranja);color:#fff;}.b-zerar{background:#b23b3b;color:#fff;}
+  sub,sup{font-size:.72em;}
+  .nota{font-size:.82rem;color:#5a6b76;font-style:italic;text-align:center;}
+  .dupla{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:620px){.dupla{grid-template-columns:1fr;}}
+  .mini{font-size:.8rem;color:#5a6b76;}
+</style>
+</head>
+<body>
+<div class="fabrica-bg"></div>
+<header>
+  <h1>⚙ Fábrica de Sequências — Resumo</h1>
+  <div class="sub">Matemática · 8º ano · Guia rápido de revisão</div>
+  <div class="esteira">▸ ▸ ▸ ▸ ▸ ▸ ▸</div>
+</header>
+<div class="wrap">
+
+  <h2 class="sec">1. As caixas da esteira (termos)</h2>
+  <div class="card">
+    <p>Uma <b>sequência</b> é uma lista de elementos em ordem. Cada elemento é um <b>termo</b> (imagine uma caixa saindo da esteira).</p>
+    <div class="form">a<sub>1</sub>, a<sub>2</sub>, a<sub>3</sub>, …, a<sub>n</sub></div>
+    <p>O numerozinho embaixo (o <b>índice</b>) é a <b>posição</b>. a<sub>4</sub> = "termo da 4ª posição". A letra <b>n</b> representa uma posição qualquer.</p>
+    <div class="postit"><b>Dica de prova:</b> não confunda posição com valor! Em 10; 20; 30…, o termo a<sub>2</sub> vale 20 (é o 2º da fila), não vale 2.</div>
+  </div>
+
+  <h2 class="sec">2. Padrão: a regra da máquina</h2>
+  <div class="card">
+    <p>Descobrir o <b>padrão</b> é achar a regra que leva de um termo ao próximo. Os dois mais comuns:</p>
+    <div class="dupla">
+      <div>
+        <div class="esteira-ex"><span class="cx">250</span><span class="op">+20▸</span><span class="cx">270</span><span class="op">+20▸</span><span class="cx">290</span></div>
+        <p class="mini" style="text-align:center;"><b>Somar sempre o mesmo</b> (padrão de adição)</p>
+      </div>
+      <div>
+        <div class="esteira-ex"><span class="cx">180</span><span class="op">×1,1▸</span><span class="cx">198</span><span class="op">×1,1▸</span><span class="cx">218</span></div>
+        <p class="mini" style="text-align:center;"><b>Multiplicar sempre pelo mesmo</b> (padrão de multiplicação)</p>
+      </div>
+    </div>
+    <p><b>Padrões que se repetem em ciclo:</b> use o <b>resto da divisão</b> pela quantidade de figuras do ciclo.</p>
+    <div class="form">Posição 30 no ciclo de 4 → 30 ÷ 4 = resto <b>2</b> → 2ª figura</div>
+    <div class="pegadinha"><b>Pegadinha do resto:</b> se o resto der <b>0</b>, a figura é a <b>ÚLTIMA</b> do ciclo (não a primeira!).</div>
+  </div>
+
+  <h2 class="sec">3. Vire as caixas: termo geral × recorrência</h2>
+  <p class="mini">Toque em cada caixa para virar e ver a resposta. 👆</p>
+  <div class="flips">
+    <div class="flip"><div class="flip-in">
+      <div class="face frente"><div class="tag">CONCEITO</div><div class="q">O que é <b>termo geral</b>?</div><div class="toca">tocar para virar</div></div>
+      <div class="face verso">É uma <b>fórmula</b> que calcula qualquer termo <b>direto pela posição n</b>, sem precisar dos anteriores. Ex.: a<sub>n</sub> = 5n+2.</div>
+    </div></div>
+    <div class="flip"><div class="flip-in">
+      <div class="face frente"><div class="tag">CONCEITO</div><div class="q">O que é <b>recorrência</b>?</div><div class="toca">tocar para virar</div></div>
+      <div class="face verso">É quando cada termo depende do(s) <b>anterior(es)</b>. Precisa do 1º termo + a regra. Ex.: a<sub>1</sub>=8; a<sub>n</sub>=a<sub>n−1</sub>+2.</div>
+    </div></div>
+    <div class="flip"><div class="flip-in">
+      <div class="face frente"><div class="tag">FÓRMULA</div><div class="q">a<sub>n</sub> = 3n + 4<br>dá quais termos?</div><div class="toca">tocar para virar</div></div>
+      <div class="face verso"><b>7, 10, 13, 16, 19…</b><br>(n=1 → 7; n=2 → 10; …)</div>
+    </div></div>
+    <div class="flip"><div class="flip-in">
+      <div class="face frente"><div class="tag">FÓRMULA</div><div class="q">a<sub>n</sub> = n<sup>2</sup><br>é a sequência de…?</div><div class="toca">tocar para virar</div></div>
+      <div class="face verso">Os <b>quadrados perfeitos</b>: 1, 4, 9, 16, 25…</div>
+    </div></div>
+    <div class="flip"><div class="flip-in">
+      <div class="face frente"><div class="tag">SÍMBOLO</div><div class="q">O que é <b>a<sub>n−1</sub></b>?</div><div class="toca">tocar para virar</div></div>
+      <div class="face verso">É o <b>termo de trás</b> — uma posição antes de n. "n≥2" avisa que a regra começa no 2º termo.</div>
+    </div></div>
+    <div class="flip"><div class="flip-in">
+      <div class="face frente"><div class="tag">FAMOSA</div><div class="q"><b>Fibonacci</b>: qual a regra?</div><div class="toca">tocar para virar</div></div>
+      <div class="face verso">Começa 1, 1 e cada termo é a <b>soma dos dois anteriores</b>: 1,1,2,3,5,8,13,21…</div>
+    </div></div>
+  </div>
+
+  <h2 class="sec">4. Tabela-resumo das fórmulas</h2>
+  <div class="card">
+    <table>
+      <tr><th>Tipo</th><th>Exemplo</th><th>Primeiros termos</th></tr>
+      <tr><td>Termo geral (adição)</td><td>a<sub>n</sub> = 2n + 4</td><td>6, 8, 10, 12…</td></tr>
+      <tr><td>Termo geral (potência)</td><td>a<sub>n</sub> = 5·2<sup>n</sup></td><td>10, 20, 40, 80…</td></tr>
+      <tr><td>Termo geral (quadrado)</td><td>a<sub>n</sub> = n<sup>2</sup> − 2</td><td>−1, 2, 7, 14, 23…</td></tr>
+      <tr><td>Recorrência (soma)</td><td>a<sub>1</sub>=6; a<sub>n</sub>=a<sub>n−1</sub>+2</td><td>6, 8, 10, 12…</td></tr>
+      <tr><td>Recorrência (produto)</td><td>a<sub>1</sub>=10; a<sub>n</sub>=2·a<sub>n−1</sub></td><td>10, 20, 40, 80…</td></tr>
+      <tr><td>Recorrência (dois anteriores)</td><td>a<sub>1</sub>=a<sub>2</sub>=1; a<sub>n</sub>=a<sub>n−1</sub>+a<sub>n−2</sub></td><td>1, 1, 2, 3, 5, 8…</td></tr>
+    </table>
+    <div class="postit"><b>Como descobrir a recorrência de uma lista?</b> Olhe o que muda de um termo para o outro. Sempre soma o mesmo? → a<sub>n</sub>=a<sub>n−1</sub>+k. Sempre multiplica? → a<sub>n</sub>=k·a<sub>n−1</sub>.</div>
+  </div>
+
+  <h2 class="sec">5. Aplicações que costumam cair</h2>
+  <div class="card">
+    <div class="dupla">
+      <div class="postit" style="transform:rotate(1deg);"><b>Placas na rua:</b> 1ª a 60 m, depois de 30 em 30 m, até 330 m. Quantas placas? De 60 a 330, passo 30 → (330−60)÷30 + 1 = <b>10 placas</b>. (Não esqueça o "+1" para contar a primeira!)</div>
+      <div class="postit" style="transform:rotate(-1deg);"><b>Campeonato eliminatório:</b> 64 times, cada rodada elimina metade. Total de partidas = 32+16+8+4+2+1 = <b>63</b> (sempre "nº de times − 1").</div>
+    </div>
+    <div class="pegadinha"><b>Cuidado ao contar:</b> em problemas de "quantos termos até chegar em X", conte o primeiro E o último. É fácil errar por 1.</div>
+  </div>
+
+  <h2 class="sec">📖 Glossário-relâmpago</h2>
+  <div class="card glossario">
+    <dl>
+      <dt>Termo</dt><dd>Cada elemento da sequência.</dd>
+      <dt>Índice (n)</dt><dd>Posição do termo (natural, começa em 1).</dd>
+      <dt>Termo geral</dt><dd>Fórmula que dá o termo direto pela posição.</dd>
+      <dt>Recorrência</dt><dd>Regra que usa o(s) termo(s) anterior(es).</dd>
+      <dt>Sequência finita / infinita</dt><dd>Tem fim / continua sem parar (indicada por "…").</dd>
+      <dt>Quadrados perfeitos</dt><dd>1, 4, 9, 16, 25… (a<sub>n</sub> = n²).</dd>
+      <dt>Fibonacci</dt><dd>1,1,2,3,5,8… soma dos dois anteriores.</dd>
+    </dl>
+  </div>
+
+  <div class="painel">
+    <span id="statusSalvo">💾 Suas cartas viradas ficam salvas</span>
+    <button class="b-exp" onclick="exportar()">📥 Exportar</button>
+    <button class="b-imp" onclick="document.getElementById('imp').click()">📤 Importar</button>
+    <input type="file" id="imp" hidden accept=".json" onchange="importar(event)">
+    <button class="b-zerar" onclick="zerar()">🗑️ Zerar tudo</button>
+  </div>
+  <p class="nota">Bons estudos ao jovem aprendiz! 🧡 Revise virando as caixas até acertar de olhos fechados.</p>
+</div>
+<script>
+const CHAVE='resumo_seq_8ano';
+let estado={viradas:[]};
+const flips=[...document.querySelectorAll('.flip')];
+function carimbo(){const d=new Date();document.getElementById('statusSalvo').textContent='💾 Salvo às '+d.toLocaleTimeString('pt-BR')+' ('+d.toLocaleDateString('pt-BR')+')';}
+function salvar(){estado.viradas=flips.map(f=>f.classList.contains('vira'));localStorage.setItem(CHAVE,JSON.stringify(estado));carimbo();}
+function carregar(){const s=localStorage.getItem(CHAVE);if(s){try{estado=JSON.parse(s);(estado.viradas||[]).forEach((v,i)=>{if(v&&flips[i])flips[i].classList.add('vira');});}catch(e){}}}
+flips.forEach(f=>f.addEventListener('click',()=>{f.classList.toggle('vira');salvar();}));
+function exportar(){const blob=new Blob([JSON.stringify(estado)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='resumo_seq_8ano.json';a.click();}
+function importar(ev){const f=ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{try{estado=JSON.parse(e.target.result);localStorage.setItem(CHAVE,JSON.stringify(estado));location.reload();}catch(x){alert('Arquivo inválido.');}};r.readAsText(f);}
+function zerar(){if(confirm('Zerar as cartas viradas?')){localStorage.removeItem(CHAVE);location.reload();}}
+carregar();carimbo();
+</script>
+</body>
+</html>
